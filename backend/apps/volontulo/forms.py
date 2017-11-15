@@ -119,6 +119,15 @@ class CreateOfferForm(forms.ModelForm):
             'volunteers_limit',
         ]
 
+    def clean(self):
+        super(CreateOfferForm, self).clean()
+        started_at = self.cleaned_data.get('started_at')
+        finished_at = self.cleaned_data.get('finished_at')
+        if started_at and finished_at:
+            if started_at > finished_at:
+                self.add_error('started_at', 'Data rozpoczęcia akcji nie może być późniejsza, niż data zakończenia')
+                self.add_error('finished_at', 'Data rozpoczęcia akcji nie może być późniejsza, niż data zakończenia')
+        return self.cleaned_data
 
 class UserGalleryForm(forms.ModelForm):
 
