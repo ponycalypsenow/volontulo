@@ -168,6 +168,7 @@ class CreateOfferForm(forms.ModelForm):
                 self.add_error('reserve_recruitment_end_date',
                                CreateOfferForm.reserve_recruitment_error)
 
+
 class UserGalleryForm(forms.ModelForm):
 
     """Form used for changing user profile of user."""
