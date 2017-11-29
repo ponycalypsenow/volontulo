@@ -94,7 +94,7 @@ class CreateOfferForm(forms.ModelForm):
     recruitment_error = """Data rozpoczęcia rekrutacji
         nie może być późniejsza, niż data zakończenia"""
     reserve_recruitment_error = """Data rozpoczęcia rekrutacji
-        rezerwowej nie może być późniejsza, niż data zakończenia"""  
+        rezerwowej nie może być późniejsza, niż data zakończenia"""
 
     def __init__(self, *args, **kwargs):
         super(CreateOfferForm, self).__init__(*args, **kwargs)
@@ -140,9 +140,9 @@ class CreateOfferForm(forms.ModelForm):
         if started_at and finished_at:
             if started_at > finished_at:
                 self.add_error('started_at',
-                    CreateOfferForm.start_finish_error)
+                               CreateOfferForm.start_finish_error)
                 self.add_error('finished_at',
-                    CreateOfferForm.start_finish_error)
+                               CreateOfferForm.start_finish_error)
 
     def _clean_recruitment_start_finish(self):
         recruitment_start_date = self.cleaned_data \
@@ -152,9 +152,9 @@ class CreateOfferForm(forms.ModelForm):
         if recruitment_start_date and recruitment_end_date:
             if recruitment_start_date > recruitment_end_date:
                 self.add_error('recruitment_start_date',
-                    CreateOfferForm.recruitment_error)
+                               CreateOfferForm.recruitment_error)
                 self.add_error('recruitment_end_date',
-                    CreateOfferForm.recruitment_error)
+                               CreateOfferForm.recruitment_error)
 
     def _clean_reserve_recruitment_start_finish(self):
         reserve_recruitment_start_date = self.cleaned_data \
@@ -164,9 +164,9 @@ class CreateOfferForm(forms.ModelForm):
         if reserve_recruitment_start_date and reserve_recruitment_end_date:
             if reserve_recruitment_start_date > reserve_recruitment_end_date:
                 self.add_error('reserve_recruitment_start_date',
-                    CreateOfferForm.reserve_recruitment_error)
+                               CreateOfferForm.reserve_recruitment_error)
                 self.add_error('reserve_recruitment_end_date',
-                    CreateOfferForm.reserve_recruitment_error)
+                               CreateOfferForm.reserve_recruitment_error)
 
 class UserGalleryForm(forms.ModelForm):
 
