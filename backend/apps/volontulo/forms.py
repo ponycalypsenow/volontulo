@@ -135,6 +135,7 @@ class CreateOfferForm(forms.ModelForm):
         return self.cleaned_data
 
     def _clean_start_finish(self):
+        """Validation of started_at and finished_at."""
         started_at = self.cleaned_data.get('started_at')
         finished_at = self.cleaned_data.get('finished_at')
         if started_at and finished_at:
@@ -145,6 +146,7 @@ class CreateOfferForm(forms.ModelForm):
                                CreateOfferForm.start_finish_error)
 
     def _clean_recruitment_start_finish(self):
+        """Validation of recruitment_start_date and recruitment_end_date."""
         recruitment_start_date = self.cleaned_data \
             .get('recruitment_start_date')
         recruitment_end_date = self.cleaned_data \
@@ -157,6 +159,8 @@ class CreateOfferForm(forms.ModelForm):
                                CreateOfferForm.recruitment_error)
 
     def _clean_reserve_recruitment_start_finish(self):
+        """Validation of reserve_recruitment_start_date and
+        reserve_recruitment_end_date."""
         reserve_recruitment_start_date = self.cleaned_data \
             .get('reserve_recruitment_start_date')
         reserve_recruitment_end_date = self.cleaned_data \
