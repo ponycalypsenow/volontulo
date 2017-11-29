@@ -89,6 +89,13 @@ class CreateOfferForm(forms.ModelForm):
 
     """Form reposponsible for creating offer by organization."""
 
+    start_finish_error = """Data rozpoczęcia akcji nie może być
+        późniejsza, niż data zakończenia"""
+    recruitment_error = """Data rozpoczęcia rekrutacji
+        nie może być późniejsza, niż data zakończenia"""
+    reserve_recruitment_error = """Data rozpoczęcia rekrutacji
+        rezerwowej nie może być późniejsza, niż data zakończenia"""  
+
     def __init__(self, *args, **kwargs):
         super(CreateOfferForm, self).__init__(*args, **kwargs)
         self.fields['status_old'].required = False
@@ -122,50 +129,44 @@ class CreateOfferForm(forms.ModelForm):
 
     def clean(self):
         super(CreateOfferForm, self).clean()
+        self._clean_start_finish()
+        self._clean_recruitment_start_finish()
+        self._clean_reserve_recruitment_start_finish()
+        return self.cleaned_data
+
+    def _clean_start_finish(self):
         started_at = self.cleaned_data.get('started_at')
         finished_at = self.cleaned_data.get('finished_at')
         if started_at and finished_at:
             if started_at > finished_at:
-                self.add_error(
-                    'started_at',
-                    """Data rozpoczęcia akcji nie może być późniejsza,
-                    niż data zakończenia""")
-                self.add_error(
-                    'finished_at',
-                    """Data rozpoczęcia akcji nie może być późniejsza,
-                    niż data zakończenia""")
+                self.add_error('started_at',
+                    CreateOfferForm.start_finish_error)
+                self.add_error('finished_at',
+                    CreateOfferForm.start_finish_error)
 
+    def _clean_recruitment_start_finish(self):
         recruitment_start_date = self.cleaned_data \
             .get('recruitment_start_date')
         recruitment_end_date = self.cleaned_data \
             .get('recruitment_end_date')
         if recruitment_start_date and recruitment_end_date:
             if recruitment_start_date > recruitment_end_date:
-                self.add_error(
-                    'recruitment_start_date',
-                    """Data rozpoczęcia rekrutacji nie może być późniejsza,
-                    niż data zakończenia""")
-                self.add_error(
-                    'recruitment_end_date',
-                    """Data rozpoczęcia rekrutacji nie może być późniejsza,
-                    niż data zakończenia""")
+                self.add_error('recruitment_start_date',
+                    CreateOfferForm.recruitment_error)
+                self.add_error('recruitment_end_date',
+                    CreateOfferForm.recruitment_error)
 
+    def _clean_reserve_recruitment_start_finish(self):
         reserve_recruitment_start_date = self.cleaned_data \
             .get('reserve_recruitment_start_date')
         reserve_recruitment_end_date = self.cleaned_data \
             .get('reserve_recruitment_end_date')
         if reserve_recruitment_start_date and reserve_recruitment_end_date:
             if reserve_recruitment_start_date > reserve_recruitment_end_date:
-                self.add_error(
-                    'reserve_recruitment_start_date',
-                    """Data rozpoczęcia rekrutacji rezerwowej nie może być
-                    późniejsza, niż data zakończenia""")
-                self.add_error(
-                    'reserve_recruitment_end_date',
-                    """Data rozpoczęcia rekrutacji rezerwowej nie może być
-                    późniejsza, niż data zakończenia""")
-
-        return self.cleaned_data
+                self.add_error('reserve_recruitment_start_date',
+                    CreateOfferForm.reserve_recruitment_error)
+                self.add_error('reserve_recruitment_end_date',
+                    CreateOfferForm.reserve_recruitment_error)
 
 class UserGalleryForm(forms.ModelForm):
 
