@@ -140,14 +140,14 @@ class CreateOfferForm(forms.ModelForm):
                                  self.reserve_recruitment_error)
         return self.cleaned_data
 
-    def _clean_start_finish(self, start_field_slug, end_filed_slug, error_desc):
+    def _clean_start_finish(self, start_slug, end_slug, error_desc):
         """Validation for date fields."""
-        start_field_value = self.cleaned_data.get(start_field_slug)
-        end_field_value = self.cleaned_data.get(end_filed_slug)
+        start_field_value = self.cleaned_data.get(start_slug)
+        end_field_value = self.cleaned_data.get(end_slug)
         if start_field_value and end_field_value:
             if start_field_value > end_field_value:
-                self.add_error(start_field_slug, error_desc)
-                self.add_error(end_filed_slug, error_desc)
+                self.add_error(start_slug, error_desc)
+                self.add_error(end_slug, error_desc)
 
 
 class UserGalleryForm(forms.ModelForm):
