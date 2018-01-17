@@ -129,48 +129,25 @@ class CreateOfferForm(forms.ModelForm):
 
     def clean(self):
         super(CreateOfferForm, self).clean()
-        self._clean_start_finish()
-        self._clean_recruitment_start_finish()
-        self._clean_reserve_recruitment_start_finish()
+        self._clean_start_finish('started_at',
+                                 'finished_at',
+                                 self.start_finish_error)
+        self._clean_start_finish('recruitment_start_date',
+                                 'recruitment_end_date',
+                                 self.recruitment_error)
+        self._clean_start_finish('reserve_recruitment_start_date',
+                                 'reserve_recruitment_end_date',
+                                 self.reserve_recruitment_error)
         return self.cleaned_data
 
-    def _clean_start_finish(self):
-        """Validation of started_at and finished_at."""
-        started_at = self.cleaned_data.get('started_at')
-        finished_at = self.cleaned_data.get('finished_at')
-        if started_at and finished_at:
-            if started_at > finished_at:
-                self.add_error('started_at',
-                               CreateOfferForm.start_finish_error)
-                self.add_error('finished_at',
-                               CreateOfferForm.start_finish_error)
-
-    def _clean_recruitment_start_finish(self):
-        """Validation of recruitment_start_date and recruitment_end_date."""
-        recruitment_start_date = self.cleaned_data \
-            .get('recruitment_start_date')
-        recruitment_end_date = self.cleaned_data \
-            .get('recruitment_end_date')
-        if recruitment_start_date and recruitment_end_date:
-            if recruitment_start_date > recruitment_end_date:
-                self.add_error('recruitment_start_date',
-                               CreateOfferForm.recruitment_error)
-                self.add_error('recruitment_end_date',
-                               CreateOfferForm.recruitment_error)
-
-    def _clean_reserve_recruitment_start_finish(self):
-        """Validation of reserve_recruitment_start_date and
-        reserve_recruitment_end_date."""
-        reserve_recruitment_start_date = self.cleaned_data \
-            .get('reserve_recruitment_start_date')
-        reserve_recruitment_end_date = self.cleaned_data \
-            .get('reserve_recruitment_end_date')
-        if reserve_recruitment_start_date and reserve_recruitment_end_date:
-            if reserve_recruitment_start_date > reserve_recruitment_end_date:
-                self.add_error('reserve_recruitment_start_date',
-                               CreateOfferForm.reserve_recruitment_error)
-                self.add_error('reserve_recruitment_end_date',
-                               CreateOfferForm.reserve_recruitment_error)
+    def _clean_start_finish(self, start_field_slug, end_filed_slug, error_desc):
+        """Validation for date fields."""
+        start_field_value = self.cleaned_data.get(start_field_slug)
+        end_field_value = self.cleaned_data.get(end_filed_slug)
+        if start_field_value and end_field_value:
+            if start_field_value > end_field_value:
+                self.add_error(start_field_slug, error_desc)
+                self.add_error(end_filed_slug, error_desc)
 
 
 class UserGalleryForm(forms.ModelForm):
