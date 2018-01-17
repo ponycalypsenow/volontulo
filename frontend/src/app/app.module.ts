@@ -1,4 +1,5 @@
 import { ErrorHandler, NgModule } from '@angular/core';
+import { OffersService } from './homepage-offer/offers.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,6 +12,8 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { RedirectComponent } from './redirect.component';
 import { WindowService, WindowFactory } from './window.service';
+import { OrganizationService } from './organization/organization.service';
+import { OrganizationDetailsComponent } from './organization/organization-details.component';
 import { HomepageOfferComponent } from './homepage-offer/homepage-offer.component';
 import { HomePageComponent } from './home/homepage.component';
 import { FooterComponent } from './footer/footer.component';
@@ -20,6 +23,13 @@ import { AboutUsComponent } from './static/about-us.component';
 import { RegulationsComponent } from './static/regulations.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './auth.service';
+import { OfferDetailComponent } from './offers/offer-detail/offer-detail.component';
+import { IconComponent } from './icon/icon.component';
+import { IconLabelComponent } from './icon-label/icon-label.component';
+import { BannerComponent } from './banner/banner.component';
+import { FaqOrganizationsComponent } from './static/faq-organizations.component';
+import { OfficeComponent } from './static/office/office.component';
+import { FaqVolunteersComponent } from './static/faq-volunteers.component';
 
 Raven.config(environment.sentryDSN).install();
 
@@ -35,7 +45,23 @@ const appRoutes: Routes = [
     component: HomePageComponent
   },
   {
-    path: 'o-nas',
+    path: 'organizations/:organizationSlug/:organizationId',
+    component: OrganizationDetailsComponent,
+  },
+  {
+    path: 'faq-organizations',
+    component: FaqOrganizationsComponent,
+  },
+  {
+    path: 'faq-volunteers',
+    component: FaqVolunteersComponent,
+  },
+  {
+    path: 'office',
+    component: OfficeComponent,
+  },
+  {
+    path: 'about-us',
     component: AboutUsComponent
   },
   {
@@ -45,6 +71,10 @@ const appRoutes: Routes = [
   {
     path: 'regulations',
     component: RegulationsComponent
+  },
+  {
+    path: 'offers/:offerSlug/:offerId',
+    component: OfferDetailComponent,
   },
   {
     path: '**',
@@ -59,11 +89,19 @@ const appRoutes: Routes = [
     HomePageComponent,
     HeaderComponent,
     FooterComponent,
+    OrganizationDetailsComponent,
     HomepageOfferComponent,
     CookieLawBannerComponent,
     AboutUsComponent,
     RegulationsComponent,
-    LoginComponent
+    LoginComponent,
+    OfferDetailComponent,
+    IconComponent,
+    IconLabelComponent,
+    BannerComponent,
+    FaqOrganizationsComponent,
+    OfficeComponent,
+    FaqVolunteersComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,8 +114,10 @@ const appRoutes: Routes = [
   ],
   providers: [
     AuthService,
+    OffersService,
+    OrganizationService,
     { provide: WindowService, useFactory: WindowFactory },
-    { provide: ErrorHandler, useClass: RavenErrorHandler }
+    { provide: ErrorHandler, useClass: RavenErrorHandler },
   ],
   bootstrap: [AppComponent]
 })
